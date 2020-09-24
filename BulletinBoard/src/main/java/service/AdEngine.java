@@ -31,20 +31,19 @@ public class AdEngine {
 		return true;
 
 	}
+	
+	public boolean updateAd(Ad ad) {
+		entityManager.getTransaction().begin();
+		entityManager.merge(ad);
+		entityManager.getTransaction().commit();
+		return true;
+
+	}
 
 	public Ad getAdById(Long id) {
 		return entityManager.find(Ad.class, id);
 	}
 
-	public static void main(String[] args) {
-		List<Ad> list = new AdEngine().getAds();
-		for (Ad element : list) {
-			System.out.println(element);
-			if (element.getImage() == null) {
-				System.out.println(element.getIdAd());
-			}
-		}
-	}
 
 	public List<Ad> getAds() {
 		Session session = (Session) entityManager.getDelegate();

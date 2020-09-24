@@ -91,23 +91,6 @@ public class UserEngine {
 		return isShow(user) ? "Incorrect email or password" : "Successfully logged";
 	}
 
-	public static void main(String[] args) {
-		Long number = (long) 3;
-//		User user = new User(number, "login", "password", "firstName", "lastName");
-		User user = new User();
-//		user.setEmail("kkostyan1@gmail.com");
-//		user.setPassword("adminRR77");
-//		user.setFirstName("name");
-//		user.setLastName("surname");
-//		System.out.println(new UserEngine().getRegistration(user));
-//		User user = new UserEngine().getUserById(number);
-		user = new User();
-		user.setEmail("kkostyan1@gmail.com");
-		user.setPassword("adminRR77");
-		System.out.println(new UserEngine().getUserById(number));
-		System.out.println(new UserEngine().getAccess(user));
-	}
-
 	public static byte[] hashSHA(String strToHash) {
 		MessageDigest md = null;
 		try {
