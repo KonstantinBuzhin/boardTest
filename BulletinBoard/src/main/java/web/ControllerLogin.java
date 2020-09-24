@@ -15,149 +15,114 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import service.ClientEngine;
+import model.User;
+import service.UserEngine;
 
 @Controller
 @Scope("request")
 public class ControllerLogin {
 
-//	@Autowired
-//	private Client client;
-//
-//	@Autowired
-//	private ClientEngine clientDB;
+	@Autowired
+	private User user;
+
+	@Autowired
+	private UserEngine userDB;
 
 	private boolean showForm;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String getGetLoginPage(HttpSession session) {
-//		if (session.getAttribute("keyUser") == null) {
-//			showForm = false;
-//		} else {
-//			showForm = true;
-//		}
-//		session.setAttribute("showForm", showForm);
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-		return "login";
+	public String getGetLoginPage(HttpSession session, HttpServletResponse httpServletResponse) {
+		if (session.getAttribute("keyUser") == null) {
+			showForm = true;
+			session.setAttribute("showForm", showForm);
+			return "login";
+		} else {
+			showForm = false;
+			try {
+				httpServletResponse.sendRedirect("/BulletinBoard/personalCabinet");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "personalCabinet";
+		}
+
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String getPostLoginPage(HttpSession session) {
-//		if (session.getAttribute("keyUser") == null) {
-//			showForm = false;
-//		} else {
-//			showForm = true;
-//		}
-//		session.setAttribute("showForm", showForm);
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
+	public String getPostLoginPage(HttpSession session, HttpServletResponse httpServletResponse) {
+		if (session.getAttribute("keyUser") == null) {
+			showForm = true;
+			session.setAttribute("showForm", showForm);
+			return "login";
+		} else {
+			showForm = false;
+			try {
+				httpServletResponse.sendRedirect("/BulletinBoard/personalCabinet");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "personalCabinet";
+		}
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "logout" })
+	public String getPostLoginPage(@RequestParam("logout") String logout, HttpSession session,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		if (logout != null) {
+			session.invalidate();
+			session = request.getSession(true);
+			showForm = false;
+
+			session.removeAttribute("access");
+			session.removeAttribute("currentUser");
+
+		}
+
 		return "login";
 	}
 
-//	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "loginOut" })
-//	public void doLogOut(@RequestParam("loginOut") String loginOut, HttpSession session, HttpServletRequest request,
-//			HttpServletResponse response) {
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//		if (loginOut != null) {
-//			session.invalidate();
-//			session = request.getSession(true);
-//			showForm = false;
-//			session.setAttribute("showForm", showForm);
-//			session.removeAttribute("keyUser");
-//			session.removeAttribute("currentUserName");
-//
-//			if (session.getAttribute("CART_VALUE") == null) {
-//				session.setAttribute("CART_VALUE", 0);
-//			}
-//			PrintWriter out;
-//			try {
-//				out = response.getWriter();
-//				out.write("SIGN IN");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//
-//		}
-//
-//	}
-//
-//	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "logOut" })
-//	public String getPostLoginPage(@RequestParam("logOut") String logOut, HttpSession session,
-//			HttpServletRequest request, HttpServletResponse response) {
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//		if (logOut != null) {
-//			session.invalidate();
-//			session = request.getSession(true);
-//			showForm = false;
-//			session.setAttribute("showForm", showForm);
-//			session.removeAttribute("access");
-//			session.removeAttribute("keyUser");
-//			session.removeAttribute("currentUserName");
-//
-//			if (session.getAttribute("CART_VALUE") == null) {
-//				session.setAttribute("CART_VALUE", 0);
-//			}
-//			return "login";
-//		}
-//
-//		return "login";
-//	}
-//
-//	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "login", "password" })
-//	public String getPostLoginPage(@RequestParam("login") String login, @RequestParam("password") String password,
-//			HttpSession session, HttpServletRequest request) {
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//
-//		if (login != null || password != null) {
-//			client = new Client();
-//			client.setLogin(login);
-//			client.setPassword(password);
-//			request.setAttribute("currentUser", client);
-//			session.setAttribute("access", clientDB.getAccess(client));
-//			if (clientDB.getAccess(client).equals("Successfully logged")) {
-//
-//				session.setAttribute("keyUser", "sessionCheck");
-//				showForm = false;
-//				session.setAttribute("showForm", showForm);
-//				session.setAttribute("access", clientDB.getAccess(client));
-//			}
-//			if (session.getAttribute("keyUser") != null) {
-//				session.setAttribute("currentUserName",
-//						"" + clientDB.getClientByLogin(client.getLogin()).getNameClient());
-//				session.setAttribute("currentUserLogin", "" + client.getLogin());
-//				showForm = (session.getAttribute("keyUser") != null) ? true : false;
-//				session.setAttribute("showForm", showForm);
-//			}
-//
-//			return "login";
-//		} else {
-//
-//			getGetLoginPage(session);
-//		}
-//
-//		return "login";
-//	}
-//
-//	@RequestMapping(value = "/login", method = RequestMethod.POST)
-//	public String getPostLoginPage(HttpSession session, HttpServletRequest request) {
-//		if (session.getAttribute("keyUser") == null) {
-//			showForm = false;
-//		}
-//		session.setAttribute("showForm", showForm);
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//
-//		return "login";
-//	}
+	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "email", "password" })
+	public String getPostLoginPage(@RequestParam("email") String email, @RequestParam("password") String password,
+			HttpSession session, HttpServletRequest request, HttpServletResponse httpServletResponse) {
+
+		if (email != null || password != null) {
+
+			user.setEmail(email);
+			user.setPassword(password);
+
+			if (userDB.getAccess(user).equals("Successfully logged")) {
+
+				session.setAttribute("keyUser", "active");
+
+				session.setAttribute("access", userDB.getAccess(user));
+				User currentUser = userDB.getUserByLogin(user.getEmail());
+				System.out.println("Start " + currentUser);
+				session.setAttribute("currentUser", currentUser);
+				try {
+					httpServletResponse.sendRedirect("/BulletinBoard/personalCabinet");
+					return "personalCabinet";
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+		} else {
+
+			try {
+				httpServletResponse.sendRedirect("/BulletinBoard/login");
+				return "personalCabinet";
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return "login";
+	}
 
 }

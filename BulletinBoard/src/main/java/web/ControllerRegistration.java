@@ -15,149 +15,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import service.ClientEngine;
+import model.User;
+import service.UserEngine;
 
 @Controller
 @Scope("request")
 public class ControllerRegistration {
 
-//	@Autowired
-//	private Client client;
-//
-//	@Autowired
-//	private ClientEngine clientDB;
+	@Autowired
+	private User user;
 
-	private boolean showForm;
+	@Autowired
+	private UserEngine userDB;
 
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
-	public String getGetLoginPage(HttpSession session) {
-//		if (session.getAttribute("keyUser") == null) {
-//			showForm = false;
-//		} else {
-//			showForm = true;
-//		}
-//		session.setAttribute("showForm", showForm);
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-		return "registration";
-	}
-	
-	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String getPostLoginPage(HttpSession session) {
-//		if (session.getAttribute("keyUser") == null) {
-//			showForm = false;
-//		} else {
-//			showForm = true;
-//		}
-//		session.setAttribute("showForm", showForm);
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
+	public String getGetRegisterPage(HttpSession session) {
+
 		return "registration";
 	}
 
-//	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "loginOut" })
-//	public void doLogOut(@RequestParam("loginOut") String loginOut, HttpSession session, HttpServletRequest request,
-//			HttpServletResponse response) {
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//		if (loginOut != null) {
-//			session.invalidate();
-//			session = request.getSession(true);
-//			showForm = false;
-//			session.setAttribute("showForm", showForm);
-//			session.removeAttribute("keyUser");
-//			session.removeAttribute("currentUserName");
-//
-//			if (session.getAttribute("CART_VALUE") == null) {
-//				session.setAttribute("CART_VALUE", 0);
-//			}
-//			PrintWriter out;
-//			try {
-//				out = response.getWriter();
-//				out.write("SIGN IN");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//
-//		}
-//
-//	}
-//
-//	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "logOut" })
-//	public String getPostLoginPage(@RequestParam("logOut") String logOut, HttpSession session,
-//			HttpServletRequest request, HttpServletResponse response) {
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//		if (logOut != null) {
-//			session.invalidate();
-//			session = request.getSession(true);
-//			showForm = false;
-//			session.setAttribute("showForm", showForm);
-//			session.removeAttribute("access");
-//			session.removeAttribute("keyUser");
-//			session.removeAttribute("currentUserName");
-//
-//			if (session.getAttribute("CART_VALUE") == null) {
-//				session.setAttribute("CART_VALUE", 0);
-//			}
-//			return "login";
-//		}
-//
-//		return "login";
-//	}
-//
-//	@RequestMapping(value = "/login", method = RequestMethod.POST, params = { "login", "password" })
-//	public String getPostLoginPage(@RequestParam("login") String login, @RequestParam("password") String password,
-//			HttpSession session, HttpServletRequest request) {
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//
-//		if (login != null || password != null) {
-//			client = new Client();
-//			client.setLogin(login);
-//			client.setPassword(password);
-//			request.setAttribute("currentUser", client);
-//			session.setAttribute("access", clientDB.getAccess(client));
-//			if (clientDB.getAccess(client).equals("Successfully logged")) {
-//
-//				session.setAttribute("keyUser", "sessionCheck");
-//				showForm = false;
-//				session.setAttribute("showForm", showForm);
-//				session.setAttribute("access", clientDB.getAccess(client));
-//			}
-//			if (session.getAttribute("keyUser") != null) {
-//				session.setAttribute("currentUserName",
-//						"" + clientDB.getClientByLogin(client.getLogin()).getNameClient());
-//				session.setAttribute("currentUserLogin", "" + client.getLogin());
-//				showForm = (session.getAttribute("keyUser") != null) ? true : false;
-//				session.setAttribute("showForm", showForm);
-//			}
-//
-//			return "login";
-//		} else {
-//
-//			getGetLoginPage(session);
-//		}
-//
-//		return "login";
-//	}
-//
-//	@RequestMapping(value = "/login", method = RequestMethod.POST)
-//	public String getPostLoginPage(HttpSession session, HttpServletRequest request) {
-//		if (session.getAttribute("keyUser") == null) {
-//			showForm = false;
-//		}
-//		session.setAttribute("showForm", showForm);
-//		if (session.getAttribute("CART_VALUE") == null) {
-//			session.setAttribute("CART_VALUE", 0);
-//		}
-//
-//		return "login";
-//	}
+	@RequestMapping(value = "/registration", method = RequestMethod.POST, params = { "firstName", "lastName", "email",
+			"password" })
+	public String getPostRegisterPage(@RequestParam("firstName") String firstName,
+			@RequestParam("lastName") String lastName, @RequestParam("email") String email,
+			@RequestParam("password") String password, HttpSession session, ModelMap model) {
+
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setEmail(email);
+		user.setPassword(password);
+
+		model.addAttribute("checkLogin", userDB.getCheckEmail(user));
+
+		model.addAttribute("registration", userDB.getRegistration(user));
+
+		return "registration";
+	}
+
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public String getPostRegisterPage(HttpSession session) {
+
+		return "registration";
+	}
 
 }

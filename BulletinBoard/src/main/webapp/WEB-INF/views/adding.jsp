@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,25 +15,39 @@
 		onclick="window.location='/BulletinBoard/personalCabinet';">Personal
 		Cabinet</button>
 	<br>
+	<c:if test="${access eq 'Successfully logged'}">
 
-	<form action="/BulletinBoard/adding" method="post">
+		<c:if test="${(creation eq 'made')}">
+			<h3>Your ad is successfully added.</h3>
+		</c:if>
+		<c:if test="${!(creation eq 'made')}">
 
-		<div class="container">
-			<label for="uname"><b>Title:</b></label><br> <input type="text"
-				placeholder="Enter Title" name="title" required><br> <label
-				for="uname"><b>Text description:</b></label><br> <input
-				type="text" placeholder="Enter Text description"
-				name="textDescription" required><br> <label for="uname"><b>Last
-					name:</b></label><br> <input type="text" placeholder="Enter Last name"
-				name="lastName" required><br>
+			<form action="/BulletinBoard/adding" method="post"
+				enctype="multipart/form-data">
 
-			<button type="submit">Add</button>
+				<div class="container">
+					<label for="uname"><b>Title:</b></label><br> <input
+						type="text" placeholder="Enter Title" name="title"
+						value="${param['title']}" required><br> <label
+						for="uname"><b>Text description:</b></label><br> <input
+						type="text" placeholder="Enter Text description"
+						name="textDescription" value="${param['textDescription']}"
+						required><br> <label for="uname"><b>Last
+							name:</b></label><br> <input type="text" placeholder="Enter Last name"
+						name="lastName" value="${param['textDescription']}" required><br>
+					<input type="file" name="file" required />
+					<button type="submit">Add</button>
 
-		</div>
+				</div>
 
+			</form>
+		</c:if>
+	</c:if>
+	<c:if test="${!(access eq 'Successfully logged')||(access == null)}">
+		<button type='button' onclick="window.location='/BulletinBoard/login'">Sign
+			in</button>
 
-
-	</form>
+	</c:if>
 </body>
 
 </html>
