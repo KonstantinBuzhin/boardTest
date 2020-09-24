@@ -21,8 +21,8 @@
 		<form action="/BulletinBoard/login" method="post">
 
 			<div class="container">
-				<label for="uname"><b>Email:</b></label><br> <input type="text"
-					placeholder="Enter Username" name="email" value="${param['email']}"
+				<label for="uname"><b>Email:</b></label><br> <input type="email"
+					placeholder="Enter Email" name="email" value="${param['email']}"
 					required><br> <label for="psw"><b>Password:</b></label><br>
 				<input type="password" placeholder="Enter Password" name="password"
 					required><br>

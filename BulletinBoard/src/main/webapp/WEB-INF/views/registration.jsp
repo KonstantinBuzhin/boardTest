@@ -28,7 +28,7 @@
 					required><br> <label for="uname"><b>Last
 						name:</b></label><br> <input type="text" placeholder="Enter Last name"
 					name="lastName" required><br> <label for="uname"><b>Email:</b></label><br>
-				<input type="text" placeholder="Enter Username" name="email"
+				<input type="email" placeholder="Enter Email" name="email"
 					required><br> <label for="psw"><b>Password:</b></label><br>
 				<input type="password" placeholder="Enter Password" name="password"
 					required><br>
